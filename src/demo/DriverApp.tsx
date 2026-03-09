@@ -257,7 +257,7 @@ function LoadsScreen({
 
       {state.loads.length === 0 ? (
         <div className="empty-state">
-          <div className="empty-state__icon">+</div>
+          <div className="empty-state__icon" aria-hidden="true" />
           <strong>No loads yet</strong>
           <p>Dispatch will push new trips here. The same notification center handles new assignments.</p>
         </div>
@@ -312,55 +312,45 @@ function LoadsScreen({
 }
 
 function SettingsScreen({
-  onLogout,
+  onUpdatePassword,
 }: {
-  onLogout: () => void;
+  onUpdatePassword: () => void;
 }) {
   return (
     <section className="screen">
-      <div className="section-heading">
-        <div>
-          <span className="eyebrow">Driver profile</span>
-          <h2>Settings</h2>
-        </div>
+      <div className="sticky-actions sticky-actions--single">
+        <button type="button" className="primary-button" onClick={onUpdatePassword}>
+          Update password
+        </button>
       </div>
+    </section>
+  );
+}
 
-      <article className="detail-panel">
-        <div className="panel-heading">
-          <span className="eyebrow">Session</span>
-          <h3>DR-1187</h3>
+function UpdatePasswordScreen() {
+  return (
+    <section className="screen screen--login">
+      <div className="auth-panel">
+        <div className="login-hero login-hero--compact">
+          <h2>Update password</h2>
+          <p>Enter your current password and choose a new one.</p>
         </div>
-        <p className="driver-note">Keep the session simple: notifications on, paperwork first, logout one tap away.</p>
-      </article>
-
-      <article className="detail-panel">
-        <div className="panel-heading">
-          <span className="eyebrow">Preferences</span>
-          <h3>Driver defaults</h3>
-        </div>
-        <dl className="metric-grid">
-          <div>
-            <dt>Notifications</dt>
-            <dd>Enabled</dd>
-          </div>
-          <div>
-            <dt>Uploads</dt>
-            <dd>Manual attach</dd>
-          </div>
-          <div>
-            <dt>Theme</dt>
-            <dd>High contrast</dd>
-          </div>
-          <div>
-            <dt>Role</dt>
-            <dd>Driver</dd>
-          </div>
-        </dl>
-      </article>
-
-      <div className="sticky-actions">
-        <button type="button" className="primary-button" onClick={onLogout}>
-          Log out
+        <AuthField
+          label="Current password"
+          type="password"
+          value="driver1234"
+          onChange={() => undefined}
+          placeholder="Current password"
+        />
+        <AuthField
+          label="New password"
+          type="password"
+          value=""
+          onChange={() => undefined}
+          placeholder="New password"
+        />
+        <button type="button" className="primary-button primary-button--full">
+          Save new password
         </button>
       </div>
     </section>
@@ -476,7 +466,6 @@ function LoadDetailsScreen({
         <article className="detail-panel">
           <div className="panel-heading">
             <span className="eyebrow">Status line</span>
-            <h3>Move fast, then verify docs</h3>
           </div>
           <Timeline items={selectedLoad.timeline} />
         </article>
@@ -543,7 +532,6 @@ function UploadScreen({
       <div className="section-heading">
         <div>
           <span className="eyebrow">Upload flow</span>
-          <h2>Capture only what matters</h2>
         </div>
         {state.offline ? <StatusBadge tone="warning">Signal weak</StatusBadge> : null}
       </div>
@@ -612,6 +600,7 @@ export function DriverApp({ state, dispatch }: DriverAppProps) {
   const canGoBack =
     state.screen === 'password' ||
     state.screen === 'forgotPassword' ||
+    state.screen === 'updatePassword' ||
     state.screen === 'details' ||
     state.screen === 'upload' ||
     state.screen === 'settings';
@@ -649,24 +638,24 @@ export function DriverApp({ state, dispatch }: DriverAppProps) {
             <button type="button" className="back-link back-link--header" onClick={() => dispatch({ type: 'goBack' })}>
               Back
             </button>
-          ) : (
-            <span className="eyebrow">HaulFlow Driver</span>
-          )}
-          <h1>
+          ) : null}
+          <p className="driver-app__title">
             {state.screen === 'email'
               ? 'Email'
               : state.screen === 'password'
                 ? 'Password'
                 : state.screen === 'forgotPassword'
                   ? 'Forgot password'
-              : state.screen === 'loads'
-                ? 'Assigned loads'
-                : state.screen === 'details'
-                  ? selectedLoad?.reference ?? 'Load details'
-                  : state.screen === 'settings'
-                    ? 'Settings'
-                  : 'Upload packet'}
-          </h1>
+                  : state.screen === 'updatePassword'
+                    ? 'Update password'
+                    : state.screen === 'loads'
+                      ? 'Assigned loads'
+                      : state.screen === 'details'
+                        ? selectedLoad?.reference ?? 'Load details'
+                        : state.screen === 'settings'
+                          ? 'Settings'
+                          : 'Upload packet'}
+          </p>
         </div>
 
         {state.screen === 'loads' || state.screen === 'details' || state.screen === 'upload' || state.screen === 'settings' ? (
@@ -707,6 +696,7 @@ export function DriverApp({ state, dispatch }: DriverAppProps) {
             submitted={state.forgotSubmitted}
           />
         ) : null}
+        {state.screen === 'updatePassword' ? <UpdatePasswordScreen /> : null}
         {state.screen === 'loads' ? (
           <LoadsScreen
             state={state}
@@ -732,7 +722,9 @@ export function DriverApp({ state, dispatch }: DriverAppProps) {
             onRetry={() => dispatch({ type: 'retryUpload' })}
           />
         ) : null}
-        {state.screen === 'settings' ? <SettingsScreen onLogout={() => dispatch({ type: 'logout' })} /> : null}
+        {state.screen === 'settings' ? (
+          <SettingsScreen onUpdatePassword={() => dispatch({ type: 'openUpdatePassword' })} />
+        ) : null}
       </main>
 
       {state.notificationsOpen ? (

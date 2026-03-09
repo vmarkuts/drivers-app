@@ -372,13 +372,12 @@ body::before {
   gap: 6px;
 }
 
-.driver-app__header h1 {
-  margin: 6px 0 0;
-  font-size: 1.45rem;
-  font-family: var(--font-display);
-  line-height: 1.05;
-  text-transform: none;
-  letter-spacing: 0.01em;
+.driver-app__title {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-primary);
 }
 
 .eyebrow {
@@ -702,6 +701,10 @@ body::before {
   gap: 14px;
 }
 
+.section-heading + .load-list {
+  margin-top: 16px;
+}
+
 .load-card,
 .scan-card {
   width: 100%;
@@ -903,6 +906,10 @@ body::before {
   background: none;
 }
 
+.sticky-actions--single {
+  padding-top: 48px;
+}
+
 .sticky-actions .primary-button,
 .sticky-actions .secondary-button {
   width: 100%;
@@ -1029,13 +1036,32 @@ body::before {
 .empty-state__icon {
   width: 42px;
   height: 42px;
-  display: grid;
-  place-items: center;
+  position: relative;
   border-radius: 50%;
   background: rgba(255, 176, 0, 0.1);
-  color: #ffc65d;
-  font-family: var(--font-display);
-  font-size: 1.8rem;
+}
+
+.empty-state__icon::before,
+.empty-state__icon::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffc65d;
+}
+
+.empty-state__icon::before {
+  top: 11px;
+  width: 18px;
+  height: 3px;
+  border-radius: 999px;
+}
+
+.empty-state__icon::after {
+  top: 18px;
+  width: 24px;
+  height: 10px;
+  border-radius: 0 0 8px 8px;
 }
 
 .paper-card .eyebrow,

@@ -20,6 +20,7 @@
 - Mobile hides presentation chrome and lets the interface behave like a full-screen app surface.
 - The in-phone UI is screen-driven rather than route-driven because this artifact is optimized for deterministic client demos.
 - Auth is split into three simple screens: email, password, and forgot password.
+- The in-app settings area is intentionally reduced to one action: update password, which opens its own screen and returns to settings on back.
 - Upload selection starts empty on every upload screen entry so attach behavior is explicit in each scenario.
 
 ## Deployment

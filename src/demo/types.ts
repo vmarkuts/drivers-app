@@ -9,6 +9,7 @@ export type AppScreen =
   | 'email'
   | 'password'
   | 'forgotPassword'
+  | 'updatePassword'
   | 'loads'
   | 'details'
   | 'upload'
@@ -96,6 +97,7 @@ export type DriverAppAction =
   | { type: 'continueToPassword' }
   | { type: 'openForgotPassword' }
   | { type: 'submitForgotPassword' }
+  | { type: 'openUpdatePassword' }
   | { type: 'login' }
   | { type: 'selectLoad'; loadId: string }
   | { type: 'goBack' }

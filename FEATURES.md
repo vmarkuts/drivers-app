@@ -11,7 +11,7 @@
 - Driver marks the load as delivered through a confirmation sheet.
 - Driver uploads document types through a simplified capture flow and must manually attach each required document before submission.
 - Notifications can be opened after sign-in to show assignment, re-upload, and sync messages.
-- A basic settings screen provides a visible logout path.
+- Settings is reduced to a single update-password action that opens a dedicated password update screen.
 
 ## Scenarios Included
 - `happyPath`: assigned load -> delivered -> documents uploaded successfully.

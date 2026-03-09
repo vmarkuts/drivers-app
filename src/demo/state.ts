@@ -116,6 +116,12 @@ export const driverAppReducer = (
         forgotSubmitted: true,
       };
 
+    case 'openUpdatePassword':
+      return {
+        ...state,
+        screen: 'updatePassword',
+      };
+
     case 'login':
       return {
         ...state,
@@ -151,7 +157,15 @@ export const driverAppReducer = (
       }
 
       if (state.screen === 'forgotPassword') {
-        return { ...state, screen: 'password', forgotSubmitted: false };
+        return {
+          ...state,
+          screen: state.isAuthenticated ? 'settings' : 'password',
+          forgotSubmitted: false,
+        };
+      }
+
+      if (state.screen === 'updatePassword') {
+        return { ...state, screen: 'settings' };
       }
 
       return state;

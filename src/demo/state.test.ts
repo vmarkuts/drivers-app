@@ -87,7 +87,7 @@ describe('driverAppReducer', () => {
     expect(state.selectedLoadId).toBeNull();
   });
 
-  it('requires manual attach and supports logout from settings', () => {
+  it('requires manual attach and opens settings', () => {
     let state = createScenarioState('happyPath');
 
     state = driverAppReducer(state, { type: 'continueToPassword' });
@@ -104,11 +104,6 @@ describe('driverAppReducer', () => {
     state = driverAppReducer(state, { type: 'openSettings' });
 
     expect(state.screen).toBe('settings');
-
-    state = driverAppReducer(state, { type: 'logout' });
-
-    expect(state.screen).toBe('email');
-    expect(state.isAuthenticated).toBe(false);
   });
 
   it('supports forgot password flow before sign in', () => {
@@ -124,5 +119,19 @@ describe('driverAppReducer', () => {
 
     state = driverAppReducer(state, { type: 'goBack' });
     expect(state.screen).toBe('password');
+  });
+
+  it('returns to settings when update password is opened from inside the app', () => {
+    let state = createScenarioState('happyPath');
+
+    state = driverAppReducer(state, { type: 'continueToPassword' });
+    state = driverAppReducer(state, { type: 'login' });
+    state = driverAppReducer(state, { type: 'openSettings' });
+    state = driverAppReducer(state, { type: 'openUpdatePassword' });
+
+    expect(state.screen).toBe('updatePassword');
+
+    state = driverAppReducer(state, { type: 'goBack' });
+    expect(state.screen).toBe('settings');
   });
 });
