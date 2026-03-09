@@ -5,7 +5,14 @@ export type DemoScenarioId =
   | 'uploadError'
   | 'noLoads';
 
-export type AppScreen = 'login' | 'loads' | 'details' | 'upload' | 'settings';
+export type AppScreen =
+  | 'email'
+  | 'password'
+  | 'forgotPassword'
+  | 'loads'
+  | 'details'
+  | 'upload'
+  | 'settings';
 export type DocumentType = 'BOL' | 'POD';
 export type DocumentStatus = 'pending' | 'uploaded' | 'rejected';
 export type LoadStage = 'assigned' | 'enRoute' | 'delivered';
@@ -71,6 +78,7 @@ export interface DriverAppState {
   scenarioId: DemoScenarioId;
   screen: AppScreen;
   isAuthenticated: boolean;
+  forgotSubmitted: boolean;
   selectedLoadId: string | null;
   deliverySheetOpen: boolean;
   notificationsOpen: boolean;
@@ -85,6 +93,9 @@ export interface DriverAppState {
 export type DriverAppAction =
   | { type: 'applyScenario'; scenarioId: DemoScenarioId }
   | { type: 'resetCurrentScenario' }
+  | { type: 'continueToPassword' }
+  | { type: 'openForgotPassword' }
+  | { type: 'submitForgotPassword' }
   | { type: 'login' }
   | { type: 'selectLoad'; loadId: string }
   | { type: 'goBack' }

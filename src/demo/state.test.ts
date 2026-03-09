@@ -2,7 +2,10 @@ import { createScenarioState, driverAppReducer } from './state';
 
 describe('driverAppReducer', () => {
   it('moves from login into loads', () => {
-    const nextState = driverAppReducer(createScenarioState('happyPath'), { type: 'login' });
+    let nextState = createScenarioState('happyPath');
+
+    nextState = driverAppReducer(nextState, { type: 'continueToPassword' });
+    nextState = driverAppReducer(nextState, { type: 'login' });
 
     expect(nextState.isAuthenticated).toBe(true);
     expect(nextState.screen).toBe('loads');
@@ -12,6 +15,7 @@ describe('driverAppReducer', () => {
   it('completes the happy path upload flow', () => {
     let state = createScenarioState('happyPath');
 
+    state = driverAppReducer(state, { type: 'continueToPassword' });
     state = driverAppReducer(state, { type: 'login' });
     state = driverAppReducer(state, { type: 'selectLoad', loadId: 'load-happy-1' });
     state = driverAppReducer(state, { type: 'openDeliverySheet' });
@@ -30,6 +34,7 @@ describe('driverAppReducer', () => {
   it('queues uploads offline and syncs them later', () => {
     let state = createScenarioState('offlinePending');
 
+    state = driverAppReducer(state, { type: 'continueToPassword' });
     state = driverAppReducer(state, { type: 'login' });
     state = driverAppReducer(state, { type: 'selectLoad', loadId: 'load-offline-1' });
     state = driverAppReducer(state, { type: 'openDeliverySheet' });
@@ -52,6 +57,7 @@ describe('driverAppReducer', () => {
   it('keeps upload retry inside the same workflow', () => {
     let state = createScenarioState('uploadError');
 
+    state = driverAppReducer(state, { type: 'continueToPassword' });
     state = driverAppReducer(state, { type: 'login' });
     state = driverAppReducer(state, { type: 'selectLoad', loadId: 'load-error-1' });
     state = driverAppReducer(state, { type: 'openDeliverySheet' });
@@ -72,7 +78,9 @@ describe('driverAppReducer', () => {
   });
 
   it('supports the empty no-loads state', () => {
-    const state = driverAppReducer(createScenarioState('noLoads'), { type: 'login' });
+    let state = createScenarioState('noLoads');
+    state = driverAppReducer(state, { type: 'continueToPassword' });
+    state = driverAppReducer(state, { type: 'login' });
 
     expect(state.screen).toBe('loads');
     expect(state.loads).toHaveLength(0);
@@ -82,6 +90,7 @@ describe('driverAppReducer', () => {
   it('requires manual attach and supports logout from settings', () => {
     let state = createScenarioState('happyPath');
 
+    state = driverAppReducer(state, { type: 'continueToPassword' });
     state = driverAppReducer(state, { type: 'login' });
     state = driverAppReducer(state, { type: 'selectLoad', loadId: 'load-happy-1' });
     state = driverAppReducer(state, { type: 'openDeliverySheet' });
@@ -98,7 +107,22 @@ describe('driverAppReducer', () => {
 
     state = driverAppReducer(state, { type: 'logout' });
 
-    expect(state.screen).toBe('login');
+    expect(state.screen).toBe('email');
     expect(state.isAuthenticated).toBe(false);
+  });
+
+  it('supports forgot password flow before sign in', () => {
+    let state = createScenarioState('happyPath');
+
+    state = driverAppReducer(state, { type: 'continueToPassword' });
+    state = driverAppReducer(state, { type: 'openForgotPassword' });
+
+    expect(state.screen).toBe('forgotPassword');
+
+    state = driverAppReducer(state, { type: 'submitForgotPassword' });
+    expect(state.forgotSubmitted).toBe(true);
+
+    state = driverAppReducer(state, { type: 'goBack' });
+    expect(state.screen).toBe('password');
   });
 });

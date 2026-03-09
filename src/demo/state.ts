@@ -67,8 +67,9 @@ export const createScenarioState = (scenarioId: DemoScenarioId): DriverAppState 
 
   return {
     scenarioId,
-    screen: 'login',
+    screen: 'email',
     isAuthenticated: false,
+    forgotSubmitted: false,
     selectedLoadId: resolveDefaultSelectedLoad(blueprint.loads),
     deliverySheetOpen: false,
     notificationsOpen: false,
@@ -95,11 +96,32 @@ export const driverAppReducer = (
     case 'resetCurrentScenario':
       return createScenarioState(state.scenarioId);
 
+    case 'continueToPassword':
+      return {
+        ...state,
+        screen: 'password',
+        forgotSubmitted: false,
+      };
+
+    case 'openForgotPassword':
+      return {
+        ...state,
+        screen: 'forgotPassword',
+        forgotSubmitted: false,
+      };
+
+    case 'submitForgotPassword':
+      return {
+        ...state,
+        forgotSubmitted: true,
+      };
+
     case 'login':
       return {
         ...state,
         isAuthenticated: true,
         screen: 'loads',
+        forgotSubmitted: false,
       };
 
     case 'selectLoad':
@@ -122,6 +144,14 @@ export const driverAppReducer = (
 
       if (state.screen === 'settings') {
         return { ...state, screen: 'loads' };
+      }
+
+      if (state.screen === 'password') {
+        return { ...state, screen: 'email', forgotSubmitted: false };
+      }
+
+      if (state.screen === 'forgotPassword') {
+        return { ...state, screen: 'password', forgotSubmitted: false };
       }
 
       return state;

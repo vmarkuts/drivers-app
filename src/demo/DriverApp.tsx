@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Dispatch, PropsWithChildren } from 'react';
 import { getSelectedLoad } from './state';
 import type { DemoDocument, DemoNotification, DemoTimelineEvent, DriverAppAction, DriverAppState, LoadStage } from './types';
@@ -99,36 +100,133 @@ function DeliverySheet({
   );
 }
 
-function LoginScreen({ onLogin }: { onLogin: () => void }) {
+function AuthField({
+  label,
+  type = 'text',
+  value,
+  onChange,
+  placeholder,
+}: {
+  label: string;
+  type?: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+}) {
+  return (
+    <label className="auth-field">
+      <span>{label}</span>
+      <input type={type} value={value} placeholder={placeholder} onChange={(event) => onChange(event.target.value)} />
+    </label>
+  );
+}
+
+function EmailScreen({
+  email,
+  onEmailChange,
+  onContinue,
+}: {
+  email: string;
+  onEmailChange: (value: string) => void;
+  onContinue: () => void;
+}) {
   return (
     <section className="screen screen--login">
-      <div className="brand-mark">
-        <span className="brand-mark__line" />
-        <span className="brand-mark__name">HaulFlow</span>
-      </div>
-      <div className="login-hero">
-        <h2>Loads in. Docs out. No browser clutter.</h2>
-        <p>
-          Built to keep a driver on one fast loop: open assigned trip, mark delivered, upload clean
-          paperwork.
-        </p>
-      </div>
-      <div className="paper-card">
-        <div className="field-block">
-          <span>Driver ID</span>
-          <strong>DR-1187</strong>
+      <div className="auth-panel">
+        <div className="brand-mark">
+          <span className="brand-mark__line" />
+          <span className="brand-mark__name">HaulFlow</span>
         </div>
-        <div className="field-block">
-          <span>PIN</span>
-          <strong>••••</strong>
+        <div className="login-hero">
+          <h2>Sign in</h2>
+          <p>Enter your work email to get to the driver flow.</p>
         </div>
-        <div className="field-note">
-          Existing auth/API stays untouched. This demo focuses on the mobile workflow layer only.
-        </div>
+        <AuthField
+          label="Email"
+          value={email}
+          onChange={onEmailChange}
+          placeholder="driver@haulflow.com"
+        />
+        <button type="button" className="primary-button primary-button--full" onClick={onContinue}>
+          Continue
+        </button>
       </div>
-      <button type="button" className="primary-button primary-button--full" onClick={onLogin}>
-        Sign in to assigned loads
-      </button>
+    </section>
+  );
+}
+
+function PasswordScreen({
+  email,
+  password,
+  onPasswordChange,
+  onForgotPassword,
+  onLogin,
+}: {
+  email: string;
+  password: string;
+  onPasswordChange: (value: string) => void;
+  onForgotPassword: () => void;
+  onLogin: () => void;
+}) {
+  return (
+    <section className="screen screen--login">
+      <div className="auth-panel">
+        <div className="login-hero login-hero--compact">
+          <h2>Enter password</h2>
+          <p>{email || 'driver@haulflow.com'}</p>
+        </div>
+        <AuthField
+          label="Password"
+          type="password"
+          value={password}
+          onChange={onPasswordChange}
+          placeholder="Enter password"
+        />
+        <button type="button" className="auth-link" onClick={onForgotPassword}>
+          Forgot password?
+        </button>
+        <button type="button" className="primary-button primary-button--full" onClick={onLogin}>
+          Sign in
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function ForgotPasswordScreen({
+  email,
+  onEmailChange,
+  onSubmit,
+  submitted,
+}: {
+  email: string;
+  onEmailChange: (value: string) => void;
+  onSubmit: () => void;
+  submitted: boolean;
+}) {
+  return (
+    <section className="screen screen--login">
+      <div className="auth-panel">
+        <div className="login-hero login-hero--compact">
+          <h2>Reset password</h2>
+          <p>We will send a reset link to your work email.</p>
+        </div>
+        <AuthField
+          label="Work email"
+          value={email}
+          onChange={onEmailChange}
+          placeholder="driver@haulflow.com"
+        />
+        {submitted ? (
+          <div className="auth-feedback">
+            <strong>Reset link sent</strong>
+            <p>Check your inbox and then come back to sign in.</p>
+          </div>
+        ) : null}
+        <button type="button" className="primary-button primary-button--full" onClick={onSubmit}>
+          Send reset link
+        </button>
+      </div>
     </section>
   );
 }
@@ -509,7 +607,14 @@ function UploadScreen({
 export function DriverApp({ state, dispatch }: DriverAppProps) {
   const selectedLoad = getSelectedLoad(state);
   const unreadCount = countUnread(state.notifications);
-  const canGoBack = state.screen === 'details' || state.screen === 'upload' || state.screen === 'settings';
+  const [email, setEmail] = useState('driver@haulflow.com');
+  const [password, setPassword] = useState('driver1234');
+  const canGoBack =
+    state.screen === 'password' ||
+    state.screen === 'forgotPassword' ||
+    state.screen === 'details' ||
+    state.screen === 'upload' ||
+    state.screen === 'settings';
 
   return (
     <div className="driver-app">
@@ -548,8 +653,12 @@ export function DriverApp({ state, dispatch }: DriverAppProps) {
             <span className="eyebrow">HaulFlow Driver</span>
           )}
           <h1>
-            {state.screen === 'login'
-              ? 'Fast paperwork'
+            {state.screen === 'email'
+              ? 'Email'
+              : state.screen === 'password'
+                ? 'Password'
+                : state.screen === 'forgotPassword'
+                  ? 'Forgot password'
               : state.screen === 'loads'
                 ? 'Assigned loads'
                 : state.screen === 'details'
@@ -560,7 +669,7 @@ export function DriverApp({ state, dispatch }: DriverAppProps) {
           </h1>
         </div>
 
-        {state.screen !== 'login' ? (
+        {state.screen === 'loads' || state.screen === 'details' || state.screen === 'upload' || state.screen === 'settings' ? (
           <button
             type="button"
             className="notification-button"
@@ -574,7 +683,30 @@ export function DriverApp({ state, dispatch }: DriverAppProps) {
       </header>
 
       <main className="driver-app__content">
-        {state.screen === 'login' ? <LoginScreen onLogin={() => dispatch({ type: 'login' })} /> : null}
+        {state.screen === 'email' ? (
+          <EmailScreen
+            email={email}
+            onEmailChange={setEmail}
+            onContinue={() => dispatch({ type: 'continueToPassword' })}
+          />
+        ) : null}
+        {state.screen === 'password' ? (
+          <PasswordScreen
+            email={email}
+            password={password}
+            onPasswordChange={setPassword}
+            onForgotPassword={() => dispatch({ type: 'openForgotPassword' })}
+            onLogin={() => dispatch({ type: 'login' })}
+          />
+        ) : null}
+        {state.screen === 'forgotPassword' ? (
+          <ForgotPasswordScreen
+            email={email}
+            onEmailChange={setEmail}
+            onSubmit={() => dispatch({ type: 'submitForgotPassword' })}
+            submitted={state.forgotSubmitted}
+          />
+        ) : null}
         {state.screen === 'loads' ? (
           <LoadsScreen
             state={state}

@@ -239,10 +239,7 @@ body::before {
   display: grid;
   grid-template-rows: auto auto 1fr;
   padding: env(safe-area-inset-top, 18px) 18px env(safe-area-inset-bottom, 18px);
-  background:
-    radial-gradient(circle at top left, rgba(255, 176, 0, 0.1), transparent 24%),
-    radial-gradient(circle at 82% 14%, rgba(74, 105, 146, 0.14), transparent 26%),
-    linear-gradient(180deg, rgba(18, 24, 32, 0.96) 0%, rgba(7, 10, 14, 1) 100%);
+  background: linear-gradient(180deg, #11161d 0%, #0c1117 100%);
 }
 
 .driver-app__statusbar,
@@ -377,11 +374,11 @@ body::before {
 
 .driver-app__header h1 {
   margin: 6px 0 0;
-  font-size: 2rem;
+  font-size: 1.45rem;
   font-family: var(--font-display);
-  line-height: 0.94;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  line-height: 1.05;
+  text-transform: none;
+  letter-spacing: 0.01em;
 }
 
 .eyebrow {
@@ -407,11 +404,11 @@ body::before {
   align-items: center;
   gap: 8px;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
   color: var(--text-primary);
-  padding: 12px 14px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  padding: 10px 12px;
+  box-shadow: none;
 }
 
 .notification-badge {
@@ -445,9 +442,9 @@ body::before {
 
 .screen--login {
   display: grid;
-  align-content: start;
+  align-content: center;
   gap: 18px;
-  padding-top: 18px;
+  padding-top: 32px;
 }
 
 .brand-mark {
@@ -465,9 +462,10 @@ body::before {
 
 .brand-mark__name {
   font-family: var(--font-display);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-size: 1.6rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-size: 1.2rem;
+  font-weight: 700;
 }
 
 .login-hero h2,
@@ -477,19 +475,84 @@ body::before {
 .bottom-sheet h3 {
   margin: 6px 0 0;
   font-family: var(--font-display);
-  letter-spacing: 0.05em;
-  line-height: 0.96;
-  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+  text-transform: none;
 }
 
 .login-hero h2 {
-  font-size: 3rem;
+  font-size: 1.8rem;
 }
 
 .login-hero p {
   max-width: 24rem;
-  font-size: 1.02rem;
+  font-size: 0.98rem;
   color: var(--text-muted-strong);
+}
+
+.login-hero--compact h2 {
+  font-size: 1.45rem;
+}
+
+.auth-panel {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.auth-field {
+  display: grid;
+  gap: 8px;
+}
+
+.auth-field span {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.auth-field input {
+  width: 100%;
+  height: 52px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 11, 16, 0.46);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.auth-field input::placeholder {
+  color: var(--text-muted);
+}
+
+.auth-field input:focus {
+  border-color: rgba(255, 176, 0, 0.55);
+  box-shadow: 0 0 0 3px rgba(255, 176, 0, 0.12);
+}
+
+.auth-link {
+  width: fit-content;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #ffd07d;
+  font-weight: 600;
+}
+
+.auth-feedback {
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(57, 217, 138, 0.08);
+  border: 1px solid rgba(57, 217, 138, 0.18);
+}
+
+.auth-feedback strong {
+  display: block;
+  margin-bottom: 4px;
 }
 
 .login-hero p,
@@ -516,26 +579,19 @@ body::before {
 .error-banner,
 .signal-banner {
   position: relative;
-  border-radius: 24px;
-  background:
-    linear-gradient(180deg, rgba(218, 199, 162, 0.98), rgba(187, 164, 117, 0.98));
+  border-radius: 18px;
+  background: #eef1f4;
   color: var(--text-ink);
   padding: 18px;
-  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
   overflow: hidden;
-  border: 1px solid rgba(255, 247, 227, 0.26);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .paper-card::before,
 .detail-panel::before,
 .capture-panel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(transparent 0, transparent 14px, rgba(0, 0, 0, 0.05) 15px);
-  background-size: 100% 16px;
-  opacity: 0.18;
-  pointer-events: none;
+  display: none;
 }
 
 .paper-card--compact {
@@ -650,21 +706,21 @@ body::before {
 .scan-card {
   width: 100%;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 24px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.04));
-  padding: 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 16px;
   color: inherit;
   text-align: left;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 14px 28px rgba(0, 0, 0, 0.14);
+  box-shadow: none;
 }
 
 .load-card__header h3 {
   margin: 6px 0 0;
-  font-size: 1.7rem;
-  line-height: 0.96;
+  font-size: 1.12rem;
+  line-height: 1.15;
   font-family: var(--font-display);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  text-transform: none;
 }
 
 .load-card__meta {
@@ -694,12 +750,12 @@ body::before {
   padding: 6px 12px;
   border-radius: 999px;
   border: 1px solid transparent;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-transform: none;
   white-space: nowrap;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: none;
 }
 
 .status-badge--assigned,
@@ -737,7 +793,7 @@ body::before {
 }
 
 .detail-panel h3 {
-  font-size: 1.8rem;
+  font-size: 1.18rem;
 }
 
 .metric-grid {
@@ -795,7 +851,7 @@ body::before {
   gap: 14px;
   align-items: center;
   padding: 14px;
-  border-radius: 24px;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
@@ -875,7 +931,7 @@ body::before {
   right: 12px;
   z-index: 6;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 28px;
+  border-radius: 20px;
   background: rgba(11, 14, 18, 0.98);
   backdrop-filter: blur(20px);
   box-shadow: var(--shadow-floating);
@@ -895,7 +951,7 @@ body::before {
 
 .notification-card {
   padding: 16px;
-  border-radius: 20px;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -959,7 +1015,7 @@ body::before {
 .empty-state,
 .empty-block {
   padding: 24px 20px;
-  border-radius: 24px;
+  border-radius: 18px;
   border: 1px dashed rgba(255, 255, 255, 0.16);
   background: rgba(255, 255, 255, 0.05);
 }

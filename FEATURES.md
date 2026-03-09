@@ -5,7 +5,7 @@
 - The artifact sells the UX and workflow of a future mobile app without implementing real backend, camera, or push integrations.
 
 ## Demo Flow
-- Driver lands on a focused login screen with existing auth implied, not redefined.
+- Driver lands on a simple sign-in sequence: email screen, password screen, and forgot password screen.
 - After sign-in, the driver sees assigned loads only.
 - A load opens into a compact detail view with route, trip status, and BOL/POD checklist.
 - Driver marks the load as delivered through a confirmation sheet.
