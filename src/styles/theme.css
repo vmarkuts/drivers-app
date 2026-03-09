@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Teko:wght@500;600;700&display=swap');
+
+:root {
+  --bg-obsidian: #0a0d11;
+  --bg-carbon: #12171e;
+  --bg-panel: rgba(14, 19, 26, 0.82);
+  --bg-panel-strong: rgba(9, 13, 18, 0.96);
+  --surface-paper: #d8c7a2;
+  --surface-paper-shadow: #b29e75;
+  --metal-edge: #aeb6c2;
+  --metal-shadow: #434b56;
+  --text-primary: #f3f3ee;
+  --text-muted: #bcc4cf;
+  --text-muted-strong: #d8dee6;
+  --text-ink: #1f2328;
+  --text-ink-soft: rgba(31, 35, 40, 0.72);
+  --text-ink-muted: rgba(31, 35, 40, 0.58);
+  --line-soft: rgba(255, 255, 255, 0.08);
+  --amber: #ffb000;
+  --amber-deep: #e18900;
+  --green: #39d98a;
+  --crimson: #ff6e61;
+  --steel: #95adbf;
+  --shadow-device: 0 38px 120px rgba(0, 0, 0, 0.6);
+  --shadow-floating: 0 20px 40px rgba(0, 0, 0, 0.28);
+  --radius-lg: 28px;
+  --radius-md: 20px;
+  --radius-sm: 14px;
+  --font-display: 'Teko', sans-serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  background: radial-gradient(circle at top left, rgba(255, 176, 0, 0.16), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(149, 173, 191, 0.18), transparent 26%),
+    linear-gradient(180deg, #0b0e12 0%, #050608 100%);
+  color: var(--text-primary);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+#root {
+  min-height: 100vh;
+}
